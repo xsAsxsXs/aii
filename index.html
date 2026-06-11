@@ -1,47 +1,165 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Free AI Image Generator</title>
-    <style>
-        body{
-            font-family:Arial;
-            text-align:center;
-            padding:20px;
-        }
-        input{
-            width:60%;
-            padding:10px;
-        }
-        button{
-            padding:10px 20px;
-            cursor:pointer;
-        }
-        img{
-            max-width:90%;
-            margin-top:20px;
-            border-radius:10px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Image Generator</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#111827;
+    color:white;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:900px;
+    text-align:center;
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+.input-box{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+input{
+    flex:1;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+}
+
+button{
+    padding:14px 20px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.generate{
+    background:#2563eb;
+    color:white;
+}
+
+.download{
+    background:#16a34a;
+    color:white;
+    margin-top:15px;
+    display:none;
+}
+
+#status{
+    margin:15px 0;
+}
+
+img{
+    max-width:100%;
+    border-radius:15px;
+    display:none;
+    margin-top:15px;
+}
+</style>
 </head>
 <body>
 
+<div class="container">
+
 <h1>AI Image Generator</h1>
 
-<input type="text" id="prompt" placeholder="Enter prompt">
-<button onclick="generate()">Generate</button>
+<div class="input-box">
+<input
+id="prompt"
+placeholder="Enter image prompt..."
+type="text"
+/>
+
+<button
+class="generate"
+onclick="generateImage()">
+Generate
+</button>
+</div>
+
+<div id="status"></div>
+
+<img id="result">
 
 <br>
 
-<img id="image" />
+<a id="downloadLink" download="image.png">
+<button class="download" id="downloadBtn">
+Download Image
+</button>
+</a>
+
+</div>
 
 <script>
-function generate() {
-    const prompt = document.getElementById("prompt").value;
 
-    document.getElementById("image").src =
-        "https://image.pollinations.ai/prompt/" +
-        encodeURIComponent(prompt);
+function generateImage(){
+
+    const prompt =
+    document.getElementById("prompt").value.trim();
+
+    if(!prompt){
+        alert("Enter a prompt");
+        return;
+    }
+
+    const img =
+    document.getElementById("result");
+
+    const status =
+    document.getElementById("status");
+
+    const downloadBtn =
+    document.getElementById("downloadBtn");
+
+    status.innerHTML = "Generating image...";
+
+    const url =
+    "https://image.pollinations.ai/prompt/" +
+    encodeURIComponent(prompt) +
+    "?width=1024&height=1024&seed=" +
+    Date.now();
+
+    img.onload = function(){
+        status.innerHTML = "Image generated successfully!";
+        img.style.display = "block";
+        downloadBtn.style.display = "inline-block";
+
+        document
+        .getElementById("downloadLink")
+        .href = img.src;
+    };
+
+    img.onerror = function(){
+        status.innerHTML =
+        "Failed to load image. Try again.";
+    };
+
+    img.src = url;
 }
+
 </script>
 
 </body>
