@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Free AI Image Generator</title>
+    <style>
+        body{
+            font-family:Arial;
+            text-align:center;
+            padding:20px;
+        }
+        input{
+            width:60%;
+            padding:10px;
+        }
+        button{
+            padding:10px 20px;
+            cursor:pointer;
+        }
+        img{
+            max-width:90%;
+            margin-top:20px;
+            border-radius:10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>AI Image Generator</h1>
+
+<input type="text" id="prompt" placeholder="Enter prompt">
+<button onclick="generate()">Generate</button>
+
+<br>
+
+<img id="image" />
+
+<script>
+function generate() {
+    const prompt = document.getElementById("prompt").value;
+
+    document.getElementById("image").src =
+        "https://image.pollinations.ai/prompt/" +
+        encodeURIComponent(prompt);
+}
+</script>
+
+</body>
+</html>
